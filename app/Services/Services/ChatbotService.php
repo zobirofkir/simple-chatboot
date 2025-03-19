@@ -8,9 +8,19 @@ use App\Models\Message;
 use App\Services\Constructors\ChatbotConstructor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use OpenAI\Client;
+use OpenAI;
 
 class ChatbotService implements ChatbotConstructor
 {
+    private $client;
+
+    public function __construct()
+    {
+        $this->client = OpenAI::client(env('OPENAI_API_KEY'));
+    }
+
     public function index()
     {
         $messages = Message::where('user_id', Auth::id())->get();
@@ -43,10 +53,23 @@ class ChatbotService implements ChatbotConstructor
 
     private function generateResponse($input)
     {
-        if (str_contains(strtolower($input), 'hello')) {
-            return 'Hello! How can I assist you today?';
-        }
-        return 'I am just a simple bot. Try asking me something!';
-    }
+        try {
+            $response = $this->client->chat()->create([
+                'model' => 'gpt-4',
+                'messages' => [
+                    [
+                        'role' => 'user',
+                        'content' => $input
+                    ]
+                ],
+                'temperature' => 0.7,
+                'max_tokens' => 500
+            ]);
 
+            return $response->choices[0]->message->content;
+        } catch (\Exception $e) {
+            Log::error('OpenAI Error: ' . $e->getMessage());
+            return 'I apologize, but I encountered an error. Please try again later.';
+        }
+    }
 }

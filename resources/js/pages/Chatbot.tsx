@@ -1,4 +1,4 @@
-import { router } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { ChatbotProps, Message } from '../types/chat';
 
@@ -35,6 +35,7 @@ export default function Chatbot({ messages, auth, chats }: ChatbotProps) {
 
     return (
         <div className={`flex min-h-screen flex-col ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}>
+            <Head title={auth.user.name} />
             {/* Navbar */}
             <nav className={`fixed top-0 z-50 w-full border-b ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} shadow-lg`}>
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

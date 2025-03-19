@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('sender');
-            $table->text('text');
-            $table->string('response')->nullable();
+            $table->longText('text');
+            $table->longText('response')->nullable();
             $table->timestamps();
         });
     }

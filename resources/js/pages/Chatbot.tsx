@@ -15,7 +15,7 @@ export default function Chatbot({ messages, auth }) {
             <h2 className="text-xl font-bold">Welcome, {auth.user.name}</h2>
 
             <div className="flex-1 overflow-auto p-4 bg-white rounded">
-                {messages.map((msg, index) => (
+                {messages.data.map((msg, index) => (
                     <div key={index} className="mb-2 p-2 border-b">
                         <strong className={msg.sender === "Bot" ? "text-blue-500" : "text-green-500"}>
                             {msg.sender}:

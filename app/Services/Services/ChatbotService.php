@@ -9,16 +9,16 @@ use App\Services\Constructors\ChatbotConstructor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use OpenAI\Client;
-use OpenAI;
+use Illuminate\Support\Facades\Http;
 
 class ChatbotService implements ChatbotConstructor
 {
-    private $client;
+    private $apiKey;
+    private $baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
 
     public function __construct()
     {
-        $this->client = OpenAI::client(env('OPENAI_API_KEY'));
+        $this->apiKey = env('GEMINI_API_KEY');
     }
 
     public function index()
@@ -54,21 +54,32 @@ class ChatbotService implements ChatbotConstructor
     private function generateResponse($input)
     {
         try {
-            $response = $this->client->chat()->create([
-                'model' => 'gpt-4',
-                'messages' => [
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+            ])->post($this->baseUrl . '?key=' . $this->apiKey, [
+                'contents' => [
                     [
-                        'role' => 'user',
-                        'content' => $input
+                        'parts' => [
+                            ['text' => $input]
+                        ]
                     ]
                 ],
-                'temperature' => 0.7,
-                'max_tokens' => 500
+                'generationConfig' => [
+                    'temperature' => 0.7,
+                    'maxOutputTokens' => 500,
+                ]
             ]);
 
-            return $response->choices[0]->message->content;
+            if ($response->successful()) {
+                $data = $response->json();
+                return $data['candidates'][0]['content']['parts'][0]['text'] ??
+                       'I apologize, but I encountered an error processing your request.';
+            }
+
+            Log::error('Gemini API Error: ' . $response->body());
+            return 'I apologize, but I encountered an error. Please try again later.';
         } catch (\Exception $e) {
-            Log::error('OpenAI Error: ' . $e->getMessage());
+            Log::error('Gemini Error: ' . $e->getMessage());
             return 'I apologize, but I encountered an error. Please try again later.';
         }
     }

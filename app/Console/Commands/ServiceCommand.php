@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
-class MakeServiceCommand extends Command
+class ServiceCommand extends Command
 {
     protected $signature = 'make:service {name}';
     protected $description = 'Create Service and Facade and Constructor Automatically';

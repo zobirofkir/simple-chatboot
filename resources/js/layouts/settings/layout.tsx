@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
+import AppHeaderLayout from '../app/app-header-layout';
 
 const sidebarNavItems: NavItem[] = [
     {
@@ -33,7 +34,9 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
     const currentPath = window.location.pathname;
 
     return (
-        <div className="px-4 py-6">
+        <AppHeaderLayout>
+
+<div className="px-4 py-6">
             <Heading title="Settings" description="Manage your profile and account settings" />
 
             <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
@@ -64,5 +67,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                 </div>
             </div>
         </div>
+
+        </AppHeaderLayout>
     );
 }

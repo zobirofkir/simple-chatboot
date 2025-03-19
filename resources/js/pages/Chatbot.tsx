@@ -38,7 +38,7 @@ export default function Chatbot({ messages, auth, chats }: ChatbotProps) {
             {/* Navbar */}
             <nav className={`fixed top-0 z-50 w-full border-b ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} shadow-lg`}>
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex h-16 justify-between">
+                    <div className="flex h-16 items-center justify-between">
                         <div className="flex items-center">
                             <button onClick={() => setIsNavMenuOpen(!isNavMenuOpen)} className="rounded-lg p-2 hover:bg-gray-700 md:hidden">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -51,7 +51,7 @@ export default function Chatbot({ messages, auth, chats }: ChatbotProps) {
                         <div className="flex items-center space-x-4">
                             <button
                                 onClick={() => setIsDarkMode(!isDarkMode)}
-                                className={`rounded-full p-2 transition-all duration-200 hover:scale-110 ${
+                                className={`rounded-full p-2 transition-all duration-300 hover:scale-110 ${
                                     isDarkMode ? 'bg-gray-700' : 'bg-gray-200'
                                 } shadow-md`}
                             >
@@ -59,13 +59,13 @@ export default function Chatbot({ messages, auth, chats }: ChatbotProps) {
                             </button>
                             <button
                                 onClick={() => router.get('/settings')}
-                                className="hidden transform rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 hover:bg-gray-700 md:block"
+                                className="hidden transform rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-105 hover:bg-gray-700 md:block"
                             >
                                 Settings
                             </button>
                             <button
                                 onClick={handleLogout}
-                                className="hidden transform rounded-lg bg-red-500 px-3 py-2 text-sm font-medium text-white transition-all duration-200 hover:scale-105 hover:bg-red-600 md:block"
+                                className="hidden transform rounded-lg bg-red-500 px-3 py-2 text-sm font-medium text-white transition-all duration-300 hover:scale-105 hover:bg-red-600 md:block"
                             >
                                 Logout
                             </button>
@@ -88,7 +88,7 @@ export default function Chatbot({ messages, auth, chats }: ChatbotProps) {
                                         switchChat(chat.id);
                                         setIsNavMenuOpen(false);
                                     }}
-                                    className={`block w-full rounded-lg px-3 py-2 text-left text-base font-medium ${
+                                    className={`block w-full rounded-lg px-3 py-2 text-left text-base font-medium transition-all duration-300 ${
                                         currentChat === chat.id
                                             ? 'bg-blue-500 text-white'
                                             : isDarkMode
@@ -117,18 +117,18 @@ export default function Chatbot({ messages, auth, chats }: ChatbotProps) {
             </nav>
 
             {/* Main Chat Area */}
-            <div className="mt-16 flex flex-1 flex-col container mx-auto">
+            <div className="container mx-auto mt-16 flex flex-1 flex-col">
                 {/* Messages */}
                 <div className={`flex-1 overflow-auto p-4 ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
                     {messages.data.map((msg: Message, index: number) => (
                         <div
                             key={msg.id || index}
-                            className={`mb-4 max-w-3xl transform transition-all duration-200 hover:scale-102 ${
+                            className={`mb-4 max-w-3xl transform transition-all duration-300 hover:scale-102 ${
                                 msg.sender === 'Bot' ? 'ml-4' : 'mr-4 ml-auto'
                             }`}
                         >
                             <div
-                                className={`rounded-xl p-3 shadow-lg ${
+                                className={`rounded-xl p-3 shadow-lg transition-all duration-300 ${
                                     msg.sender === 'Bot' ? (isDarkMode ? 'bg-gray-800' : 'bg-white') : 'bg-blue-500 text-white'
                                 }`}
                                 style={{
@@ -152,14 +152,14 @@ export default function Chatbot({ messages, auth, chats }: ChatbotProps) {
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                            className={`flex-1 rounded-xl border p-2 shadow-inner transition-all duration-200 focus:ring-2 focus:ring-blue-500 ${
+                            className={`flex-1 rounded-xl border p-2 shadow-inner transition-all duration-300 focus:ring-2 focus:ring-blue-500 ${
                                 isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white'
                             }`}
                             placeholder="Type a message..."
                         />
                         <button
                             onClick={sendMessage}
-                            className="transform rounded-xl bg-blue-500 px-4 py-2 text-white transition-all duration-200 hover:scale-105 hover:bg-blue-600 hover:shadow-xl"
+                            className="transform rounded-xl bg-blue-500 px-4 py-2 text-white transition-all duration-300 hover:scale-105 hover:bg-blue-600 hover:shadow-xl"
                             style={{
                                 boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
                             }}
